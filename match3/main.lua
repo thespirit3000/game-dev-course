@@ -1,81 +1,76 @@
-require("src.Dependencies")
+require "src.Dependencies"
 
-WINDOW_WIDTH = 1280
-WINDOW_HEIGHT = 720
+WINDOW_WIDTH = 800 
+WINDOW_HEIGHT = 600 
 
-VIRTUAL_WIDTH = 384
-VIRTUAL_HEIGHT = 216
+VIRTUAL_HEIGHT = 243
+VIRTUAL_WIDTH = 432
 
 function love.load()
-    intervals = {1, 2, 4, 3, 2, 8}
-    counters = {0, 0, 0, 0, 0, 0}
-    for i = 1, 6 do
-        Timer.every(
-            intervals[i],
-            function()
-                counters[i] = counters[i] + 1
-            end
-        )
-    end
     love.graphics.setDefaultFilter("nearest", "nearest")
-    currentSecond = 0
-    secondTimer = 0
-    love.window.setTitle("Match 3 Game")
+    math.randomseed(os.time())
+    love.window.setTitle("Breakout game")
+    love.graphics.setFont(gFonts["small"])
+    gSounds["music"]:play()
+    gSounds["music"]:setLooping(true)
+
     push:setupScreen(
         VIRTUAL_WIDTH,
         VIRTUAL_HEIGHT,
         WINDOW_WIDTH,
         WINDOW_HEIGHT,
-        {fullscreen = false, resizable = false, vsync = true}
+        {fullscreen = false, resizable = true, vsync = true}
     )
 
-    gameState = "start"
-end
+    love.keyboard.keysPressed = {}
 
-function love.update(dt)
-    secondTimer = secondTimer + dt
-    if secondTimer > 1 then
-        currentSecond = currentSecond + 1
-        secondTimer = secondTimer % 1
-    end
-    Timer.update(dt)
-end
-
-function love.keypressed(key)
-    if key == "escape" then
-        love.event.quit()
-    elseif key == "enter" or key == "return" then
-        if gameState == "start" then
-            gameState = "play"
-        else
-            gameState = "start"
-        end
-    end
-end
-
-function love.draw()
-    push:start()
-    love.graphics.clear(0, 0, 0, 255)
-    love.graphics.setFont(gFonts["small"])
-    for i = 1, 6 do
-        love.graphics.printf(
-            "Timer " .. tostring(counters[i]) .. " seconds (every) " .. tostring(intervals[i]),
-            0,
-            16 * i,
-            VIRTUAL_WIDTH,
-            "center"
-        )
-    end
-    displayFPS()
-    push:finish()
+    gStateMachine:change("start")
 end
 
 function love.resize(w, h)
     push:resize(w, h)
 end
 
+function love.update(dt)
+    gStateMachine:update(dt)
+    love.keyboard.keysPressed = {}
+end
+
+function love.draw()
+    push:start()
+    local backgroundWidth = gTextures["background"]:getWidth()
+    local backgroundHeight = gTextures["background"]:getHeight()
+    love.graphics.draw(
+        gTextures["background"],
+        0, -- x starting point
+        0, -- y starting point
+        0, -- rotation
+        VIRTUAL_WIDTH / (backgroundWidth - 1), --scale x
+        VIRTUAL_HEIGHT / (backgroundHeight - 1) -- scale y
+    )
+    gStateMachine:render()
+    displayFPS()
+    push:finish()
+end
+
 function displayFPS()
     love.graphics.setFont(gFonts["small"])
     love.graphics.setColor(0, 255, 0, 255)
     love.graphics.print("FPS:  " .. tostring(love.timer.getFPS(), 10, 10))
+end
+
+function love.keypressed(key)
+    love.keyboard.keysPressed[key] = true
+
+    if key == "escape" then
+        love.event.quit()
+    end
+end
+
+function love.keyboard.wasPressed(key)
+    if love.keyboard.keysPressed[key] then
+        return true
+    else
+        return false
+    end
 end
