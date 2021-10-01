@@ -11,44 +11,30 @@ require "src.states.HightScoresState"
 require "src.states.ServeState"
 require "src.states.GameOverSate"
 
+require("src.Ship")
+require("src.Bullet")
+
 -- game states
-gStateMachine =
-    StateMachine {
-    ["start"] = function()
-        return StartState()
-    end,
-    ["play"] = function()
-        return PlayState()
-    end,
-    ["hight-scores"] = function()
-        return HightScoresState()
-    end,
-    ["serve"] = function()
-        return ServeState()
-    end,
-    ["game-over"] = function()
-        return GameOverState()
-    end
+gStateMachine = StateMachine {
+    ["start"] = function() return StartState() end,
+    ["play"] = function() return PlayState() end,
+    ["hight-scores"] = function() return HightScoresState() end,
+    ["serve"] = function() return ServeState() end,
+    ["game-over"] = function() return GameOverState() end
 }
 
 gSounds = {
-    ["music"] = love.audio.newSource("sounds/music.wav", "static")
+    ["music"] = love.audio.newSource("sounds/music.wav", "static"),
+    ['fireSound'] = love.audio.newSource('sounds/paddle_hit.wav', 'static')
 }
 
 gTextures = {
-    ["arrows"] = love.graphics.newImage("graphics/arrows.png"),
     ["background"] = love.graphics.newImage("graphics/background.png"),
-    ["blocks"] = love.graphics.newImage("graphics/blocks.png"),
-    ["main"] = love.graphics.newImage("graphics/breakout.png"),
-    ["hearts"] = love.graphics.newImage("graphics/hearts.png"),
-    ["particle"] = love.graphics.newImage("graphics/particle.png"),
-    ["ui"] = love.graphics.newImage("graphics/ui.png")
+    ['main'] = love.graphics.newImage('graphics/tiny.png')
 }
 gFrames = {
-    ["paddles"] = GenerateQuadsPaddles(gTextures["main"]),
-    ["balls"] = GenerateQuadsBalls(gTextures["main"]),
-    ["bricks"] = GenerateQuadsBricks(gTextures["main"]),
-    ["hearts"] = GenerateQuads(gTextures["hearts"], 10, 9)
+    ['sprites'] = GenerateQuads(gTextures['main'], 16, 16),
+    ["bullets"] = GenerateQuadsBullets(gTextures['main'])
 }
 
 gFonts = {

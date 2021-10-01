@@ -6,8 +6,11 @@ function GenerateQuads(atlas, tileWidth, tileHeight)
 
     for y = 0, sheetHeight - 1 do
         for x = 0, sheetWidth - 1 do
-            spritesheet[sheetCounter] =
-                love.graphics.newQuad(x * tileWidth, y * tileHeight, tileWidth, tileHeight, atlas:getDimensions())
+            spritesheet[sheetCounter] = love.graphics.newQuad(x * tileWidth,
+                                                              y * tileHeight,
+                                                              tileWidth,
+                                                              tileHeight,
+                                                              atlas:getDimensions())
             sheetCounter = sheetCounter + 1
         end
     end
@@ -28,8 +31,8 @@ end
     sprite sheet. Since the sprite sheet has non-uniform sprites within,
     we have to return a subset of GenerateQuads.
 ]]
-function GenerateQuadsBricks(atlas)
-    return table.slice(GenerateQuads(atlas, 32, 16), 1, 21)
+function GenerateQuadsBullets(atlas)
+    return table.slice(GenerateQuads(atlas, 16, 16), 25, 30)
 end
 
 --[[
@@ -46,16 +49,20 @@ function GenerateQuadsPaddles(atlas)
 
     for i = 0, 3 do
         -- smallest
-        quads[counter] = love.graphics.newQuad(x, y, 32, 16, atlas:getDimensions())
+        quads[counter] = love.graphics.newQuad(x, y, 32, 16,
+                                               atlas:getDimensions())
         counter = counter + 1
         -- medium
-        quads[counter] = love.graphics.newQuad(x + 32, y, 64, 16, atlas:getDimensions())
+        quads[counter] = love.graphics.newQuad(x + 32, y, 64, 16,
+                                               atlas:getDimensions())
         counter = counter + 1
         -- large
-        quads[counter] = love.graphics.newQuad(x + 96, y, 96, 16, atlas:getDimensions())
+        quads[counter] = love.graphics.newQuad(x + 96, y, 96, 16,
+                                               atlas:getDimensions())
         counter = counter + 1
         -- huge
-        quads[counter] = love.graphics.newQuad(x, y + 16, 128, 16, atlas:getDimensions())
+        quads[counter] = love.graphics.newQuad(x, y + 16, 128, 16,
+                                               atlas:getDimensions())
         counter = counter + 1
 
         -- prepare X and Y for the next set of paddles
@@ -79,7 +86,8 @@ function GenerateQuadsBalls(atlas)
     local quads = {}
 
     for i = 0, 3 do
-        quads[counter] = love.graphics.newQuad(x, y, 8, 8, atlas:getDimensions())
+        quads[counter] = love.graphics
+                             .newQuad(x, y, 8, 8, atlas:getDimensions())
         x = x + 8
         counter = counter + 1
     end
@@ -88,15 +96,12 @@ function GenerateQuadsBalls(atlas)
     y = 56
 
     for i = 0, 2 do
-        quads[counter] = love.graphics.newQuad(x, y, 8, 8, atlas:getDimensions())
+        quads[counter] = love.graphics
+                             .newQuad(x, y, 8, 8, atlas:getDimensions())
         x = x + 8
         counter = counter + 1
     end
 
     return quads
 end
-function brickRender(bricks)
-    for k, brick in pairs(bricks) do
-        brick:render()
-    end
-end
+function brickRender(bricks) for k, brick in pairs(bricks) do brick:render() end end
