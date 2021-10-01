@@ -35,6 +35,10 @@ function GenerateQuadsBullets(atlas)
     return table.slice(GenerateQuads(atlas, 16, 16), 25, 30)
 end
 
+function GenerateQuadsEnemies(atlas)
+    return table.slice(GenerateQuads(atlas, 16, 16), 11, 14)
+end
+
 --[[
     This function is specifically made to piece out the paddles from the
     sprite sheet. For this, we have to piece out the paddles a little more

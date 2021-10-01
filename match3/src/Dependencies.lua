@@ -13,6 +13,8 @@ require "src.states.GameOverSate"
 
 require("src.Ship")
 require("src.Bullet")
+require("src.Enemy")
+require("src.Stars")
 
 -- game states
 gStateMachine = StateMachine {
@@ -34,7 +36,8 @@ gTextures = {
 }
 gFrames = {
     ['sprites'] = GenerateQuads(gTextures['main'], 16, 16),
-    ["bullets"] = GenerateQuadsBullets(gTextures['main'])
+    ["bullets"] = GenerateQuadsBullets(gTextures['main']),
+    ["enemies"] = GenerateQuadsEnemies(gTextures['main'])
 }
 
 gFonts = {

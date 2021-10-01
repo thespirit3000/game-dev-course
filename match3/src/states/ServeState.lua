@@ -1,18 +1,13 @@
 ServeState = Class {__includes = BaseState}
 
-function ServeState:enter(params) end
+function ServeState:enter(params) self.player = params.player end
 function ServeState:update(dt)
     if love.keyboard.wasPressed("enter") or love.keyboard.wasPressed("return") then
-        gStateMachine:change("play", {
-            paddle = self.paddle,
-            bricks = self.bricks,
-            health = self.health,
-            score = self.score,
-            ball = self.ball
-        })
+        gStateMachine:change("play", {player = self.player})
     end
 end
 function ServeState:render()
-    love.graphics.printf("press Enter", 0, VIRTUAL_HEIGHT / 2, VIRTUAL_WIDTH,
-                         "center")
+    self.player:render()
+    love.graphics.printf("press Enter to play", 0, VIRTUAL_HEIGHT / 2 - 4,
+                         VIRTUAL_WIDTH, "center")
 end

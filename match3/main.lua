@@ -5,6 +5,7 @@ WINDOW_HEIGHT = 600
 
 VIRTUAL_HEIGHT = 243
 VIRTUAL_WIDTH = 432
+local stars = {}
 
 function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
@@ -19,12 +20,21 @@ function love.load()
 
     love.keyboard.keysPressed = {}
 
+    timer = 0
+
     gStateMachine:change("start")
 end
 
 function love.resize(w, h) push:resize(w, h) end
 
 function love.update(dt)
+    timer = timer + dt
+    if timer > 0.3 then
+        timer = 0
+        table.insert(stars, Stars())
+    end
+
+    for k, star in pairs(stars) do star:update(dt) end
     gStateMachine:update(dt)
     love.keyboard.keysPressed = {}
 end
@@ -33,8 +43,10 @@ function love.draw()
     push:start()
     local backgroundWidth = gTextures["background"]:getWidth()
     local backgroundHeight = gTextures["background"]:getHeight()
-    love.graphics.setColor(242 / 255, 242 / 255, 170 / 255, 255)
+    love.graphics.setColor(59 / 255, 57 / 255, 66 / 255, 255)
     love.graphics.rectangle('fill', 0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT)
+    for k, star in pairs(stars) do star:render() end
+    love.graphics.setColor(255, 255, 255, 1)
     gStateMachine:render()
     displayFPS()
     push:finish()
