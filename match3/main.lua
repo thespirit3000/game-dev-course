@@ -7,6 +7,8 @@ VIRTUAL_HEIGHT = 243
 VIRTUAL_WIDTH = 432
 
 function love.load()
+    local intervals = {1,2,4,2,5}
+    counters = {0,0,0,0,0}
     love.graphics.setDefaultFilter("nearest", "nearest")
     math.randomseed(os.time())
     love.window.setTitle("Breakout game")
@@ -56,7 +58,7 @@ end
 function displayFPS()
     love.graphics.setFont(gFonts["small"])
     love.graphics.setColor(0, 255, 0, 255)
-    love.graphics.print("FPS:  " .. tostring(love.timer.getFPS(), 10, 10))
+    love.graphics.print("FPS:  " .. tostring(love.timer.getFPS()), 10, 10)
 end
 
 function love.keypressed(key)

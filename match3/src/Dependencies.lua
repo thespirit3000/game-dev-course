@@ -1,7 +1,7 @@
 Class = require "lib.class"
 push = require "lib.push"
 require "src.Util"
-require 'lib.knife.timer'
+TIMER = require 'lib.knife.timer'
 
 require "src.StateMachine"
 require "src.states.BaseState"
