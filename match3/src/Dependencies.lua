@@ -45,3 +45,5 @@ gFonts = {
     ["medium"] = love.graphics.newFont("fonts/font.ttf", 16),
     ["large"] = love.graphics.newFont("fonts/font.ttf", 32)
 }
+
+gIntervals = {0.5, 0.2, 1, 2, 4}
