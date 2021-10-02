@@ -5,6 +5,8 @@ function Bullet:init(x, y)
     self.y = y
     self.speed = 300
     self.remove = false
+    self.width = 16
+    self.height = 16
 end
 
 function Bullet:update(dt)

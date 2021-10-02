@@ -5,10 +5,13 @@ function PlayState:enter(params) self.player = params.player end
 function PlayState:init()
     self.bullets = {}
     self.enemies = {}
+    self.enemyMaxSpeed = 50
+    self.enemyMinSpeed = 15
     TIMER.every(2, function()
         table.insert(self.enemies,
                      Enemy(math.random(20, VIRTUAL_WIDTH - 20), 0,
-                           math.random(-10, 10), math.random(15, 50)))
+                           math.random(-10, 10),
+                           math.random(self.enemyMinSpeed, self.enemyMaxSpeed)))
     end)
 end
 
@@ -19,6 +22,9 @@ function PlayState:update(dt)
     end
 
     for k, enemy in pairs(self.enemies) do
+        for i, bullet in pairs(self.bullets) do
+            if enemy:collides(bullet) then enemy.remove = true end
+        end
         if enemy.remove then table.remove(self.enemies, k) end
         enemy:update(dt)
     end
